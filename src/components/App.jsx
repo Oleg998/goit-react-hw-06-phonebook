@@ -1,4 +1,4 @@
-import {  useRef } from 'react';
+
 
 import PhoneForm from './MyPhone/PhoneForm/PhoneForm';
 
@@ -18,7 +18,7 @@ export const App = () => {
 
   const dispatch = useDispatch();
   
-  const firstRender = useRef(true);
+  
 
   // useEffect(() => {
   //   if(!firstRender.current){
