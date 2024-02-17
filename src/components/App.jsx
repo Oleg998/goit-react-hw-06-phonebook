@@ -1,33 +1,19 @@
-
-
 import PhoneForm from './MyPhone/PhoneForm/PhoneForm';
 
 import PhoneList from './MyPhone/PhoneList/PhoneList';
 
 import { useSelector, useDispatch } from 'react-redux';
 
-import { addContact, deleteContact, setFilter } from '../redux/actions';
+import { addContact, deleteContact } from "../redux/contacts/contacts-slice"
 
-import {
+import { setFilter } from "../redux/filter/filter-slice"
 
-  getFilterByContact,
-} from '../redux/selectors';
+import { getFilterByContact } from '../redux/contacts/contacts-selectors';
 
-export const App = () => {
+export const App =  () => {
   const contacts = useSelector(getFilterByContact);
 
   const dispatch = useDispatch();
-  
-  
-
-  // useEffect(() => {
-  //   if(!firstRender.current){
-  //   localStorage.setItem('myPhoneBook', JSON.stringify(contacts))};
-  // }, [contacts]);
-
-  // useEffect(() =>{ (firstRender.current = false)}, []);
-
-  // const [filter, setFilter] = useState('');
 
   const isDulecate = ({ name }) => {
     const normalazeName = name.toLowerCase();
@@ -58,7 +44,7 @@ export const App = () => {
       <PhoneList
         items={contacts}
         deleteName={deleteName}
-         handelSearce={handelSearce}
+        handelSearce={handelSearce}
       />
     </div>
   );
