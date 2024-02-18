@@ -1,7 +1,17 @@
-import css from "./PhoneList.module.css"
+import { useSelector, useDispatch } from 'react-redux';
+import { deleteContact } from '../../../redux/contacts/contacts-slice';
+import { setFilter } from '../../../redux/filter/filter-slice';
+import { getFilterByContact } from '../../../redux/contacts/contacts-selectors';
+import css from './PhoneList.module.css';
 
-const PhoneList = ({ items, deleteName, handelSearce }) => {
-  const elements = items.map(({ id, name, number }) => (
+const PhoneList = () => {
+  const contacts = useSelector(getFilterByContact);
+  const dispatch = useDispatch();
+  const deleteName = id => {
+    dispatch(deleteContact(id));
+  };
+  const handelSearce = ({ target }) => dispatch(setFilter(target.value));
+  const elements = contacts.map(({ id, name, number }) => (
     <li key={id}>
       {name} :{number}
       <button
@@ -15,7 +25,7 @@ const PhoneList = ({ items, deleteName, handelSearce }) => {
   ));
 
   return (
-    <div className={css.wrapper} >
+    <div className={css.wrapper}>
       <h2>Contacts</h2>
       <p> Find Cotacts by Name</p>
       <input
@@ -26,7 +36,6 @@ const PhoneList = ({ items, deleteName, handelSearce }) => {
       <ul className={css.phone_list}>{elements}</ul>
     </div>
   );
-}; 
+};
 
-
-export default PhoneList
+export default PhoneList;

@@ -1,16 +1,37 @@
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import { nanoid } from 'nanoid';
 import css from './PhoneForm.module.css';
+import { useSelector, useDispatch } from 'react-redux';
+import { addContact } from '../../../redux/contacts/contacts-slice';
+import { getFilterByContact } from '../../../redux/contacts/contacts-selectors';
+import { useState } from 'react';
 
 const INITIAL_STATE = {
-
   name: '',
   number: '',
 };
 
-const PhoneForm = ({ onSubmit }) => {
+const PhoneForm = () => {
   const [state, setState] = useState({ ...INITIAL_STATE });
-  const nameId = useMemo(()=>nanoid(),[]);
+
+  const dispatch = useDispatch();
+  const contacts = useSelector(getFilterByContact);
+
+  const isDulecate = ({ name }) => {
+    const normalazeName = name.toLowerCase();
+    const dublicate = contacts.find(item => {
+      const normalizedCurrentName = item.name.toLowerCase();
+      return normalazeName === normalizedCurrentName;
+    });
+    return Boolean(dublicate);
+  };
+
+  const addForPhenebook = data => {
+    const action = addContact(data);
+    dispatch(action);
+  };
+
+  const nameId = useMemo(() => nanoid(), []);
   const numbId = useMemo(() => nanoid(), []);
 
   const handelChange = ({ target }) => {
@@ -20,8 +41,11 @@ const PhoneForm = ({ onSubmit }) => {
 
   const handelSubmit = e => {
     e.preventDefault();
-    onSubmit({ ...state });
+    if (isDulecate(state)) {
+      return alert(`Name ${state.name} already in Phonebook`);
+    }
     setState({ ...INITIAL_STATE });
+    addForPhenebook({ ...state });
   };
   const { name, number } = state;
   return (
